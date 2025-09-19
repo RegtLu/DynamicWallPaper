@@ -7,8 +7,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
-
-struct MouseData;
+#include "EventDef.h"
 
 class EventManager {
     std::queue<MouseData> events;

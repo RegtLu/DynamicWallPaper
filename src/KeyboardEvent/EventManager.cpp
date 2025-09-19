@@ -3,9 +3,9 @@
 //
 
 #include <condition_variable>
-#include <Windows.h>
 #include <mutex>
 #include <queue>
+#include "EventDef.h"
 
 
 #include "EventManager.h"

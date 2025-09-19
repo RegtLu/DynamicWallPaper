@@ -8,6 +8,7 @@
 #include "IRender.h"
 
 class WallPaperWindow : public ISDLWindows {
+    int circleCount=10;
     std::deque<std::pair<int,int>> pts;
 public:
     WallPaperWindow(): ISDLWindows() {

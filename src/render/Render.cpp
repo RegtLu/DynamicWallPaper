@@ -4,10 +4,13 @@
 
 #include "Render.h"
 
+#include <algorithm>
 #include <iostream>
+#include <unordered_set>
 
 #include "../KeyboardEvent/Hook.h"
 #include "windows.h"
+#include "../KeyboardEvent/EventDef.h"
 
 void DrawCircle(SDL_Renderer *renderer, int centreX, int centreY, int radius) {
     const int32_t diameter = (radius * 2);
@@ -55,9 +58,9 @@ void WallPaperWindow::PumpMouseQueue(int &r, int &g, int &b, int &x, int &y) {
 
     MouseData data;
     while (em->pop_v(data)) {
-        const int evt = static_cast<int>(data.wParam);
-        latestX = data.pt.x;
-        latestY = data.pt.y;
+        int evt = data.event;
+        latestX = data.x;
+        latestY = data.y;
         switch (evt) {
             case WM_LBUTTONDOWN:
                 if (!leftDown) {
@@ -90,17 +93,20 @@ void WallPaperWindow::RenderLoop() {
     int x, y;
     while (!Quit()) {
         PumpMouseQueue(r, g, b, x, y);
-        if (pts.size() >= 10) {
+        if (pts.size() >= circleCount) {
             pts.pop_front();
         }
         pts.emplace_back(x, y);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-        for (int i = 0; i < 10; i++) {
-            DrawCircle(renderer, pts[i].first, pts[i].second, 10 + 3 * i);
+        std::pair<int, int> last = pts[circleCount-1];
+        for (int i = circleCount-1; i > -1; i--) {
+            if (last != pts[i]) {
+                DrawCircle(renderer, pts[i].first, pts[i].second, 30 - 3 * i);
+            }
+            last = pts[i];
         }
-        DrawCircle(renderer, x, y, 20);
         SDL_RenderPresent(renderer);
         SDL_Delay(16);
     }

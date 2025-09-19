@@ -26,6 +26,7 @@ add_executable(WallPaper
         ${SOURCE}
         src/render/Render.cpp
         src/render/Render.h
+        src/KeyboardEvent/EventDef.h
 )
 
 target_include_directories(WallPaper PRIVATE

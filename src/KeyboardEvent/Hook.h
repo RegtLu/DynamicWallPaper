@@ -11,10 +11,5 @@
 extern EventManager *em;
 
 
-struct MouseData {
-    WPARAM wParam;
-    POINT  pt;
-};
-
 void ProcessHook();
 #endif //HOOK_H

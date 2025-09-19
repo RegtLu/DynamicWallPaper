@@ -11,6 +11,7 @@
 
 #include "EventManager.h"
 #include "MinHookDLL.h"
+#include "EventDef.h"
 
 // 键盘
 // LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
@@ -32,8 +33,9 @@ LRESULT CALLBACK LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
         if (nCode >= 0) {
             auto *mouse = reinterpret_cast<MSLLHOOKSTRUCT *>(lParam);
             MouseData d{};
-            d.wParam = wParam;
-            d.pt = mouse->pt;
+            d.event = static_cast<int>(wParam);
+            d.x = mouse->pt.x;
+            d.y = mouse->pt.y;
             em->push(d);
         }
         return CallNextHookEx(nullptr, nCode, wParam, lParam);
